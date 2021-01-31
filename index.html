@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Testing Realtime Cripto </title>
+</head>
+<body>
+
+	<h1> Hello Cripto! </h1>
+
+	<div id="priceBTC"> 
+
+	<div>
+
+	<script type="text/javascript">
+
+		var apiKey = "ef50ca287977bbc7bbca00707f11c32f3ecfcc141c7994daf266a89925f495f7";		
+		var RealtimeCripto = new WebSocket("wss://streamer.cryptocompare.com/v2?api_key="+ apiKey);
+
+		RealtimeCripto.onopen = function onStreamOpen(){
+
+			var subRequest = {
+        		"action": "SubAdd",
+        		"subs": ["0~Coinbase~BTC~USD"]
+    		};
+
+
+    		RealtimeCripto.send(JSON.stringify(subRequest));
+
+
+		}
+
+
+		RealtimeCripto.onmessage = function onStreamMessage(message) {
+    		var message = event.data;
+    		//console.log("Received from Cryptocompare: " + message);
+
+    		var price = JSON.parse(message);
+    		var price = price["P"];
+
+    		var elem = document.getElementById("priceBTC");
+
+    		elem.innerHTML = `<h3> Price BTC: ${price} USD`; 
+
+    		console.log(price)
+
+
+		}
+
+
+	</script>
+
+
+</body>
+</html>
+
